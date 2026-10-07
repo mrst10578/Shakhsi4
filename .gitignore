@@ -1,0 +1,9 @@
+data/*
+!data/.gitkeep
+results/*.log
+results/*.dta
+results/*.xlsx
+results/*.csv
+**/__pycache__/
+*.pyc
+.env
