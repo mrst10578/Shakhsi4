@@ -21,9 +21,9 @@ xtdescribe
 misstable summarize
 gen double ln_productivity = ln(Productivity)
 foreach x in Growth ln_productivity Internet Broadband ICT_Exports Unemployment Inflation RnD {
- display as text "Panel IPS unit-root test: \`x'"
- capture noisily xtunitroot ips \`x', lags(1)
- if _rc display as error "IPS unavailable for \`x'; no inference."
+ display as text "Panel IPS unit-root test: `x'"
+ capture noisily xtunitroot ips `x', lags(1)
+ if _rc display as error "IPS unavailable for `x'; no inference."
 }
 pwcorr Internet Broadband ICT_Exports Unemployment Inflation RnD, sig
 regress Growth Internet Broadband ICT_Exports Unemployment Inflation RnD i.Year
@@ -44,12 +44,12 @@ drop yr_1
 unab year_dummies: yr_*
 * T=18 vs N=47: high instrument proliferation risk with 17 year dummies.
 foreach y in Growth ln_productivity {
- display as result "EXPERIMENTAL System GMM: \`y'"
- capture noisily xtabond2 \`y' L.\`y' Internet Broadband ICT_Exports Unemployment Inflation RnD \`year_dummies', ///
-    gmmstyle(L.\`y' Internet Broadband ICT_Exports, lag(1 1) collapse) ///
-    ivstyle(Unemployment Inflation RnD \`year_dummies', equation(both)) ///
+ display as result "EXPERIMENTAL System GMM: `y'"
+ capture noisily xtabond2 `y' L.`y' Internet Broadband ICT_Exports Unemployment Inflation RnD `year_dummies', ///
+    gmmstyle(L.`y' Internet Broadband ICT_Exports, lag(1 1) collapse) ///
+    ivstyle(Unemployment Inflation RnD `year_dummies', equation(both)) ///
     twostep robust small
- if _rc display as error "GMM failed: no validated estimate for \`y'."
+ if _rc display as error "GMM failed: no validated estimate for `y'."
  else display as error "NOT VALIDATED: check instrument count vs 47 groups, Hansen, AR(1), AR(2), difference-in-Hansen and sensitivity."
 }
 log close
